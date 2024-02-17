@@ -3,7 +3,6 @@
 using namespace frc;
 using namespace std;
 
-
 void Robot::RobotInit(){ //inicializacion del robot
 
   //Selección de Autónomos
@@ -30,22 +29,25 @@ void Robot::RobotPeriodic() { //
   SmartDashboard::PutBoolean("bY : ", bY);
   SmartDashboard::PutBoolean("bX : ", bX);
 
-  SmartDashboard::PutNumber("left x : ", left_joystick_axis_y);
-  SmartDashboard::PutNumber("left y : ", left_joystick_axis_y);
-  SmartDashboard::PutNumber("right x : ", right_joystick_axis_x);
-  SmartDashboard::PutNumber("right y : ", right_joystick_axis_y);
+  SmartDashboard::PutNumber("left x : ", left_x);
+  SmartDashboard::PutNumber("left y : ", left_y);
+  SmartDashboard::PutNumber("right x : ", right_x);
+  SmartDashboard::PutNumber("right y : ", right_y);
 }
 
 void Robot::AutonomousInit() {
 
-  // Reiniciando cronometro 
+  //Conf Timer y Compresor  
   m_timer.Reset();
   m_timer.Start();
+
+  Compresor.Disable();
 
   /*Inicializacion del autonomo. Le damos a la variable m_autoselected 
   el valor del autonomo seleccionado en el smart dashboard*/
   m_autoSelected = m_chooser.GetSelected();
-  cout << "Autonomous Selected:" << m_autoSelected << endl;
+
+  cout << "Auto Selected:" << m_autoSelected << endl;
 
   if (m_autoSelected == kAutoNameCustom1){
     //Toda la progra
@@ -62,31 +64,139 @@ void Robot::AutonomousInit() {
 
 void Robot::AutonomousPeriodic(){
 
-  /* Esta funcion contiene los bloques de codigo de todos los caminos del autonomo.
-  Estructura base de los autónomos
-  En x_s, x representa los segundos de movimiento.
-  (velocidad del robot, velocidad minima, velocidad maxima). */
+  //La Progra de cada Autónomo
 
   if (m_autoSelected == kAutoNameCustom1){ //Nombre 1
 
-    first_autonomous();
-
+    //Estructura base de los autónomos
+    //En x_s, x representa los segundos de movimiento
+    
+        
   }else if (m_autoSelected == kAutoNameCustom2){ //Nombre 2
    
-    second_autonomous();
+    // (velocidad minimo, velocidad del robot, velocidad maximo)
+
+    // Primer cara  
+    if(m_timer.Get() < 3_s){
+        I_Tank(-0.25,0.5,0.7);
+        D_Tank(-0.25,0.5,0.7);
+      
+      //Tiempo muerto
+      }else if(m_timer.Get() < 3.5_s){
+        D_Tank(0.0,-0.5,0.5);
+        I_Tank(0.0,-0.5,0.5);
+
+      // Primer vuelta
+      }else if(m_timer.Get() < 4.5_s){
+        D_Tank(-0.45,-0.5,0.5);
+        I_Tank(0.45,-0.5,0.5);
+
+      // Tiempo muerto
+      }else if(m_timer.Get() < 5_s){
+        D_Tank(0.0,-0.5,0.5);
+        I_Tank(0.0,-0.5,0.5);
+
+      // Segunda cara
+      }else if(m_timer.Get() < 8_s){
+        D_Tank(-0.25,-0.5,0.5);
+        I_Tank(-0.25,-0.0,0.5);
+
+      //Tiempo muerto
+      }else if(m_timer.Get() < 8.5_s){
+        D_Tank(0.0,-0.5,0.5);
+        I_Tank(0.0,-0.5,0.5);
+
+      // Segunda vuelta
+      }else if(m_timer.Get() < 9.5_s){
+        D_Tank(-0.45,-0.5,0.5);
+        I_Tank(0.45,-0.5,0.5);
+
+      //Tiempo muerto
+      }else if(m_timer.Get() < 10_s){
+        D_Tank(0.0,-0.5,0.5);
+        I_Tank(0.0,-0.5,0.5);
+      
+      // Tercer cara
+      }else if(m_timer.Get() < 13_s){
+        D_Tank(-0.25,-0.5,0.5);
+        I_Tank(-0.25,-0.0,0.5);
+      
+      //Tiempo muerto
+      }else if(m_timer.Get() < 13.5_s){
+        D_Tank(0.0,-0.5, 0.5);
+        I_Tank(0.0,-0.5, 0.5);
+      
+      // Tercer vuelta
+      }else if(m_timer.Get() < 14.5_s){
+        D_Tank(-0.45,-0.5,0.5);
+        I_Tank(0.45,-0.0,0.5);
+      
+      // Tiempo muerto
+      }else if(m_timer.Get() < 15_s){
+        D_Tank(0.0,-0.5,0.5);
+        I_Tank(0.0,-0.0,0.5); 
+
+      // Cuarta cara
+      }else if(m_timer.Get() < 18_s){
+        D_Tank(-0.25,-0.5,0.5);
+        I_Tank(-0.25,-0.0,0.5); 
+
+      // Tiempo muerto
+      }else if(m_timer.Get() < 18.5_s){
+      D_Tank(0.0,-0.5,0.5);
+      I_Tank(0.0,-0.0,0.5); 
+
+      // Ultima vuelta
+      }else if(m_timer.Get() < 19.5_s){
+      D_Tank(-0.45,-0.5,0.5);
+      I_Tank(0.45,-0.0,0.5); 
+      }
+
 
   }else if (m_autoSelected == kAutoNameCustom3){ //Nombre 3
 
-    third_autonomous();
+    if(m_timer.Get() <1.5_s){
+        I_Tank(-0.3,-1.0,0.7);
+        D_Tank(-0.3,-1.0,0.7);
+
+      }else if(m_timer.Get() <2_s){
+        D_Tank(0.0,-1.0,0.7);
+        I_Tank(0.0,-1.0,0.7);
+        
+      }else if(m_timer.Get() <3.5_s){
+        D_Tank(0.4,-1.0,0.7);
+        I_Tank(0.4,-1.0,0.7);
+
+      }else if(m_timer.Get() <9_s){
+        D_Tank(0.7,-1.0,1.0);
+        I_Tank(-0.7,-1.0,1.0);
+
+      }
 
   }else if (m_autoSelected == kAutoNameCustom4){ //Nombre 4
 
-    fourth_autonomous();
-
+  
+ 
   }else{ //Default 
 
-    default_autonomous();
+  if(m_timer.Get() < 3_s){
+      I_Tank(-0.5,-0.5,0.7);
+      D_Tank(-0.5,-0.5,0.7);
+    
+    }else if(m_timer.Get() <5_s){
+      D_Tank(0.0,-0.5,0.5);
+      I_Tank(0.0,-0.5,0.5);
 
+    }else if(m_timer.Get() <8_s){
+      D_Tank(0.5,-0.5,0.5);
+      I_Tank(0.5,-0.5,0.5);
+
+    }else{
+      D_Tank(0.0,-0.5,0.5);
+      I_Tank(0.0,-0.5,0.5);
+    }
+
+    
   }
 
   ia++;
@@ -100,25 +210,19 @@ void Robot::TeleopInit() {
 
   invertir_direccion = true;
 
+  Compresor.Disable();
+  Vacio.Set(false);
 }
 
 void Robot::TeleopPeriodic(){
-  
-/* Esta función es un loop for; para que el robot avanze, retroceda, gire o se detenga, necesita
-constantemente actualizar los valores tanto de los motores, como los booleanos (true or false),
-si es mecesario. */
-
-/* Esta linea aumenta el valor de "it" por una unidad cada vez que el loop se ejecuta,
-no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
   it++;
 
-// Esta funcion actualiza los valores del SmartDashboard
+  //SmartDashboard
+
   SmartDashboard::UpdateValues();
   
-// Mapeo de los controles del driver 1 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  /* El metodo "xbox.Get + boton + ();"
-  se usa para obtener el valor del boton que estas aplastando, y lo almacenamos
-  en una variable para usar esos valores despues cuando los necesitemos.*/
+  //Mapeo de los controles del driver 1
+  
   leftbump = xbox.GetLeftBumper();
   rightbump = xbox.GetRightBumper();
 
@@ -127,22 +231,29 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
   bY = xbox.GetYButton();
   bX = xbox.GetXButton();
 
-  left_joystick_axis_x = xbox.GetLeftX();
-  left_joystick_axis_y2 = xbox.GetLeftY();
+  left_x = xbox.GetLeftX();
+  left_y = xbox.GetLeftY();
 
-  right_joystick_axis_x = xbox.GetRightX();
-  right_joystick_axis_y2 = xbox.GetRightY();
+  leftnt = -xbox.GetLeftY();
+  rightnt = -xbox.GetRightY();
+
+  right_x = xbox.GetRightX();
+  right_y = xbox.GetRightY();
 
   righttrig = xbox.GetRightTriggerAxis();
   lefttrig = xbox.GetLeftTriggerAxis();
 
 
   if(bA == true){
-    
+    Compresor.EnableDigital();
+  }else{
+
   }
 
   if(bB == true){
-    
+    Compresor.Disable();
+  }else{
+
   }
 
   if(bX == true)
@@ -154,22 +265,29 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
     invertir_direccion = true;
   }
 
+  // Declarar Variable para cambio de sentido para trabajo del movimiento Robot  
 
-  // Comparación Variable para Mover Robot Tanque ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // Variable para sentido (invertir)
+  
+
+  // Comparación Variable para Mover Robot Tanque
 
   if (invertir_direccion == true)
   {
-    D_Tank(right_joystick_axis_y,-limite_velocidad,limite_velocidad);
-    I_Tank(left_joystick_axis_y,-limite_velocidad,limite_velocidad);
+    D_Tank(right_y,-limite_velocidad,limite_velocidad);
+    I_Tank(left_y,-limite_velocidad,limite_velocidad);
   }
   else
   {
-    DS_Tank(right_joystick_axis_y,-limite_velocidad,limite_velocidad);
-    IS_Tank(left_joystick_axis_y,-limite_velocidad,limite_velocidad);
+    DS_Tank(right_y,-limite_velocidad,limite_velocidad);
+    IS_Tank(left_y,-limite_velocidad,limite_velocidad);
   }
   
-  //Funciones de Botones Xbox Driver (resto) ------------------------------------------------------------------------------------------------------------------------------------------------------
-  //Conf Control² (todo) 
+  //Funciones de Botones Xbox Driver (resto)
+
+  
+
+  //Conf Control² (todo)
 
   leftbump2 = xbox2.GetLeftBumper();
   rightbump2 = xbox2.GetRightBumper();
@@ -179,18 +297,35 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
   bY2 = xbox2.GetYButton();
   bX2 = xbox2.GetXButton();
 
-  left_joystick_axis_y2 = xbox2.GetLeftX();
-  left_joystick_axis_y2 = xbox2.GetLeftY();
+  left_x2 = xbox2.GetLeftX();
+  left_y2 = xbox2.GetLeftY();
 
-  right_joystick_axis_x2 = xbox2.GetRightX();
-  right_joystick_axis_y2 = xbox2.GetRightY();
+  right_x2 = xbox2.GetRightX();
+  right_y2 = xbox2.GetRightY();
 
-  clamp(left_joystick_axis_y2,-0.5,0.5);
-  clamp(right_joystick_axis_y2,-0.5,0.5);
+  clamp(left_y2,-0.5,0.5);
+  clamp(right_y2,-0.5,0.5);
 
+  if(bA2 == true){
+    Piston.Set(true);
+  }else{
+
+  }
+
+  if(bB2 == true){
+    Piston.Set(false);
+  }else{
+
+  }
+
+  if(bX2 == true){
+    Vacio.Set(true);
+  }else{
+
+  }
 
   if(bY2 == true){
-    
+    Vacio.Set(false);
   }else{
 
   }
@@ -214,8 +349,9 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
   if(lefttrig == true)
   {
     SPM2.Set(0.8);
-  }else{
-    
+  }
+  else
+  {
     if(righttrig == true)
     {
       SPM2.Set(-0.8);
@@ -228,78 +364,33 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
    
 }
 
-// Funciones de Movimiento ------------------------------------------------------------------------------------------------------------------------------------------------------
+// Funciones de Movimiento
 
-void Robot::D_Tank(double control, float lim_neg, float lim_pos)
+void Robot::D_Tank(double control,float lim_neg,float lim_pos)
 {
-    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
-    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    DA.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    DB.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
 }
 
-void Robot::I_Tank(double control, float lim_neg, float lim_pos)
+void Robot::I_Tank(double control,float lim_neg,float lim_pos)
 {
-    victorspx_izquierda_delante.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
-    victorspx_izquierda_atras.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    IA.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    IB.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
 }
 
-void Robot::DS_Tank(double control, float lim_neg, float lim_pos)
+void Robot::DS_Tank(double control,float lim_neg,float lim_pos)
 {
-    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    DA.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    DB.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
 }
 
-void Robot::IS_Tank(double control, float lim_neg, float lim_pos)
+void Robot::IS_Tank(double control,float lim_neg,float lim_pos)
 {
-    victorspx_izquierda_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    victorspx_izquierda_atras.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    IA.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    IB.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
 }
 
-void Robot::default_autonomous(){
-
-  if(m_timer.Get() < 3_s){
-      I_Tank(-0.5,-0.5,0.7);
-      D_Tank(-0.5,-0.5,0.7);
-    
-    }else if(m_timer.Get() <5_s){
-      D_Tank(0.0,-0.5,0.5);
-      I_Tank(0.0,-0.5,0.5);
-
-    }else if(m_timer.Get() <8_s){
-      D_Tank(0.5,-0.5,0.5);
-      I_Tank(0.5,-0.5,0.5);
-
-    }else{
-      D_Tank(0.0,-0.5,0.5);
-      I_Tank(0.0,-0.5,0.5);
-    } 
-}
-
-void Robot::first_autonomous(){
-
-}
-
-void Robot::second_autonomous(){
-
-}
-
-void Robot::third_autonomous(){
-
-}
-
-void Robot::fourth_autonomous(){
-
-}
-
-void Robot::fifth_autonomous(){
-
-}
-
-void Robot::sixth_autonomous(){
-
-}
-
-
-//Resto del Código ------------------------------------------------------------------------------------------------------------------------------------------------------
+//Resto del Código
 
 void Robot::DisabledInit() {}
 

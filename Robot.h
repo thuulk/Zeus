@@ -13,6 +13,8 @@
 #include <frc/DriverStation.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
 #include <frc/Joystick.h>
+#include <frc/Compressor.h>
+#include <frc/Solenoid.h>
 #include <frc/Counter.h>
 #include <frc/Timer.h>
 #include <frc/motorcontrol/MotorController.h>
@@ -34,11 +36,10 @@
 using namespace std;
 using namespace frc;
 
-
 class Robot : public frc::TimedRobot {
  public:
 
-  //Funciones ------------------------------------------------------------------------------------------------------------------------------------------------------
+  //Funciones
 
   void RobotInit() override;
   void RobotPeriodic() override;
@@ -54,20 +55,11 @@ class Robot : public frc::TimedRobot {
   void I_Tank(double control,float lim_neg,float lim_pos);
   void DS_Tank(double control,float lim_neg,float lim_pos);
   void IS_Tank(double control,float lim_neg,float lim_pos);
-  
 
 private:
 
-  // Funciones de los autonomos ------------------------------------------------------------------------------------------------------------------------------------------------------
-  void default_autonomous();
-  void first_autonomous();
-  void second_autonomous();
-  void third_autonomous();
-  void fourth_autonomous();
-  void fifth_autonomous();
-  void sixth_autonomous();
-
-  //Autónomos y SmartDashboard ------------------------------------------------------------------------------------------------------------------------------------------------------
+  //Autónomos y SmartDashboard
+  
   SendableChooser<string> m_chooser;
   const string kAutoNameDefault = "0(exp)";
   const string kAutoNameCustom1 = "1";
@@ -81,7 +73,8 @@ private:
   int it = 0;
   int ia = 0; 
 
-  // Control 1 ------------------------------------------------------------------------------------------------------------------------------------------------------
+  //variables control
+
   XboxController xbox{0};
 
   bool leftbump = false;
@@ -91,15 +84,48 @@ private:
   bool bX = false;
   bool bY = false;
 
-  double left_joystick_axis_x = 0.0;
-  double left_joystick_axis_y = 0.0;
-  double right_joystick_axis_x = 0.0;
-  double right_joystick_axis_y = 0.0;
+  double left_x = 0.0;
+  double left_y = 0.0;
+  double right_x = 0.0;
+  double right_y = 0.0;
+  double leftnt = 0.0;
+  double rightnt = 0.0;
 
   double righttrig = 0.0;
   double lefttrig = 0.0;
 
-  //Control 2 ------------------------------------------------------------------------------------------------------------------------------------------------------
+  //Variables de los motores 
+
+  bool invertir_direccion = true;
+  int limite_velocidad = 0.5;
+  
+  //Sparks & Victors 
+
+  VictorSPX DA{3}; 
+  VictorSPX DB{4}; 
+  VictorSPX IB{5}; 
+  VictorSPX IA{6}; 
+
+  rev::CANSparkMaxLowLevel::MotorType Brushed;
+  
+  rev::CANSparkMax SPM1{7,Brushed};
+  rev::CANSparkMax SPM2{8,Brushed}; 
+
+  Spark SP{0};
+  
+  //Solenoides y Compresor
+
+  Solenoid Vacio{PneumaticsModuleType::CTREPCM,7};
+  Solenoid Piston{PneumaticsModuleType::CTREPCM,6};
+
+  Compressor Compresor{0, PneumaticsModuleType::CTREPCM};
+
+  //Timer
+
+  Timer m_timer;
+
+  //Control 2
+
   XboxController xbox2{1};
 
   bool leftbump2 = false;
@@ -109,43 +135,17 @@ private:
   bool bX2 = false;
   bool bY2 = false;
 
-  double left_joystick_axis_x2 = 0.0;
-  double left_joystick_axis_y2 = 0.0;
-  double right_joystick_axis_x2 = 0.0;
-  double right_joystick_axis_y2 = 0.0;
-
-  //Variables de los motores ----------------------------------------------------------------------------------------------------------------------------------------
-
-  bool invertir_direccion = true;
-  int limite_velocidad = 1;
+  double left_x2 = 0.0;
+  double left_y2 = 0.0;
+  double right_x2 = 0.0;
+  double right_y2 = 0.0;
   
-  // Sparks & Victors ----------------------------------------------------------------------------------------------------------------------------------------
- 
-  /*variables que almacenan el Devide ID definido
-  en el software correspondiente del controlador, el nombre de las variables
-  se debe a la posicion de los mismo en el robot */
-
-  VictorSPX victorspx_izquierda_delante{1}; 
-  VictorSPX victorspx_izquierda_atras{2}; 
-  VictorSPX victorspx_derecha_delante{4}; 
-  VictorSPX victorspx_derecha_atras{3}; 
-
-  rev::CANSparkMaxLowLevel::MotorType Brushed;
-  rev::CANSparkMax SPM1{7,Brushed};
-  rev::CANSparkMax SPM2{8,Brushed}; 
-
-  //Spark SP{0};
-
-  //Timer ------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  Timer m_timer;
-  
-  /*
-  NOTA
-  El valor de las variables no siempre
-  tiene que ser el mismo, se cambiarán
-  de acuerdo a las necesidades del robot
-  y de como esté conectado
+    /*
+    NOTA
+    El valor de las variables no siempre
+    tiene que ser el mismo, se cambiarán
+    de acuerdo a las necesidades del robot
+    y de como esté conectado
   */
 };
 

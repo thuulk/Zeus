@@ -241,20 +241,12 @@ void Robot::IS_Tank(double control, float lim_neg, float lim_pos)
 void Robot::default_autonomous(){
 
   if(m_timer.Get() < 3_s){
-      I_Tank(-0.5,-0.5,0.7);
-      D_Tank(-0.5,-0.5,0.7);
-    
-    }else if(m_timer.Get() <5_s){
-      D_Tank(0.0,-0.5,0.5);
-      I_Tank(0.0,-0.5,0.5);
-
-    }else if(m_timer.Get() <8_s){
-      D_Tank(0.5,-0.5,0.5);
-      I_Tank(0.5,-0.5,0.5);
-
-    }else{
-      D_Tank(0.0,-0.5,0.5);
-      I_Tank(0.0,-0.5,0.5);
+      SPM2.Set(1);
+      SPM3.Set(1);
+  }
+  if(m_timer.Get() < 4.5_s){
+      I_Tank(-1,-0.5,0.7);
+      D_Tank(-1,-0.5,0.7);
     } 
 }
 

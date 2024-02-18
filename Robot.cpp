@@ -30,10 +30,10 @@ void Robot::RobotPeriodic() { //
   SmartDashboard::PutBoolean("bY : ", bY);
   SmartDashboard::PutBoolean("bX : ", bX);
 
-  SmartDashboard::PutNumber("left x : ", left_joystick_axis_y);
-  SmartDashboard::PutNumber("left y : ", left_joystick_axis_y);
-  SmartDashboard::PutNumber("right x : ", right_joystick_axis_x);
-  SmartDashboard::PutNumber("right y : ", right_joystick_axis_y);
+  SmartDashboard::PutNumber("left x : ", left_y);
+  SmartDashboard::PutNumber("left y : ", left_y);
+  SmartDashboard::PutNumber("right x : ", right_x);
+  SmartDashboard::PutNumber("right y : ", right_y);
 }
 
 void Robot::AutonomousInit() {
@@ -122,28 +122,18 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
   leftbump = xbox.GetLeftBumper();
   rightbump = xbox.GetRightBumper();
 
-  bA = xbox.GetAButton();
-  bB = xbox.GetBButton();
   bY = xbox.GetYButton();
   bX = xbox.GetXButton();
 
-  left_joystick_axis_x = xbox.GetLeftX();
-  left_joystick_axis_y2 = xbox.GetLeftY();
+  left_x = xbox.GetLeftX();
+  left_y = xbox.GetLeftY();
 
-  right_joystick_axis_x = xbox.GetRightX();
-  right_joystick_axis_y2 = xbox.GetRightY();
+  right_x = xbox.GetRightX();
+  right_y = xbox.GetRightY();
 
   righttrig = xbox.GetRightTriggerAxis();
   lefttrig = xbox.GetLeftTriggerAxis();
 
-
-  if(bA == true){
-    
-  }
-
-  if(bB == true){
-    
-  }
 
   if(bX == true)
   {
@@ -159,13 +149,13 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
 
   if (invertir_direccion == true)
   {
-    D_Tank(right_joystick_axis_y,-limite_velocidad,limite_velocidad);
-    I_Tank(left_joystick_axis_y,-limite_velocidad,limite_velocidad);
+    D_Tank(right_y,-limite_velocidad,limite_velocidad);
+    I_Tank(left_y,-limite_velocidad,limite_velocidad);
   }
   else
   {
-    DS_Tank(right_joystick_axis_y,-limite_velocidad,limite_velocidad);
-    IS_Tank(left_joystick_axis_y,-limite_velocidad,limite_velocidad);
+    DS_Tank(right_y,-limite_velocidad,limite_velocidad);
+    IS_Tank(left_y,-limite_velocidad,limite_velocidad);
   }
   
   //Funciones de Botones Xbox Driver (resto) ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -179,14 +169,14 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
   bY2 = xbox2.GetYButton();
   bX2 = xbox2.GetXButton();
 
-  left_joystick_axis_y2 = xbox2.GetLeftX();
-  left_joystick_axis_y2 = xbox2.GetLeftY();
+  left_x2 = xbox2.GetLeftX();
+  left_y2 = xbox2.GetLeftY();
 
-  right_joystick_axis_x2 = xbox2.GetRightX();
-  right_joystick_axis_y2 = xbox2.GetRightY();
+  right_x2 = xbox2.GetRightX();
+  right_y2 = xbox2.GetRightY();
 
-  clamp(left_joystick_axis_y2,-0.5,0.5);
-  clamp(right_joystick_axis_y2,-0.5,0.5);
+  clamp(left_y2,-0.5,0.5);
+  clamp(right_y2,-0.5,0.5);
 
 
   if(bY2 == true){
@@ -230,8 +220,8 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
 
 void Robot::D_Tank(double control, float lim_neg, float lim_pos)
 {
-    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
-    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
 }
 
 void Robot::I_Tank(double control, float lim_neg, float lim_pos)
@@ -242,8 +232,8 @@ void Robot::I_Tank(double control, float lim_neg, float lim_pos)
 
 void Robot::DS_Tank(double control, float lim_neg, float lim_pos)
 {
-    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
 }
 
 void Robot::IS_Tank(double control, float lim_neg, float lim_pos)

@@ -91,10 +91,10 @@ private:
   bool bX = false;
   bool bY = false;
 
-  double left_joystick_axis_x = 0.0;
-  double left_joystick_axis_y = 0.0;
-  double right_joystick_axis_x = 0.0;
-  double right_joystick_axis_y = 0.0;
+  double left_x = 0.0;
+  double left_y = 0.0;
+  double right_x = 0.0;
+  double right_y = 0.0;
 
   double righttrig = 0.0;
   double lefttrig = 0.0;
@@ -109,10 +109,10 @@ private:
   bool bX2 = false;
   bool bY2 = false;
 
-  double left_joystick_axis_x2 = 0.0;
-  double left_joystick_axis_y2 = 0.0;
-  double right_joystick_axis_x2 = 0.0;
-  double right_joystick_axis_y2 = 0.0;
+  double left_x2 = 0.0;
+  double left_y2 = 0.0;
+  double right_x2 = 0.0;
+  double right_y2 = 0.0;
 
   //Variables de los motores ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -148,4 +148,3 @@ private:
   y de como esté conectado
   */
 };
-

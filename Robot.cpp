@@ -185,21 +185,17 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
 
   }
 
-  if(leftbump == true)
-  {
-    victorspx_izquierda_delante.Set(VictorSPXControlMode::PercentOutput, 1);
-    victorspx_izquierda_atras.Set(VictorSPXControlMode::PercentOutput, 1);
+  if(leftbump == true){
+    SPM1.Set(0.8);
   }
   
   
-  if(rightbump == true)
-  {
-    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, -1);
-    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, 1);
+  if(rightbump == true){
+    SPM2.Set(0.8);
   }
    
 
-  if(lefttrig == true)
+  /*if(lefttrig == true)
   {
     SPM2.Set(0.8);
   }else{
@@ -212,7 +208,7 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
     {
       SPM2.Set(0.0);
     }
-  }
+  }*/
    
 }
 

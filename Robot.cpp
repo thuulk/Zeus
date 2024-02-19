@@ -135,19 +135,21 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
   lefttrig = xbox.GetLeftTriggerAxis();
 
 
-  if(bA == true) {
+  if(bX == true) {
     invertir_direccion = false;    
   }
   
-  if (bB == true) {
+  if (bA == true) {
     invertir_direccion = true;
   }
 
-  if (bX == true) {
+  if (leftbump == true) {
     SPM1.Set(1);
-    SPM4.Set(1);
   }
 
+  if (rightbump == true) {
+    SPM1.Set(0);
+  }
 
   // Comparación Variable para Mover Robot Tanque ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -280,9 +282,13 @@ void Robot::sixth_autonomous(){
 
 
 //Resto del Código ------------------------------------------------------------------------------------------------------------------------------------------------------
+
 void Robot::DisabledInit() {}
+
 void Robot::DisabledPeriodic() {}
+
 void Robot::TestInit() {}
+
 void Robot::TestPeriodic() {}
 
 #ifndef RUNNING_FTC_TESTS

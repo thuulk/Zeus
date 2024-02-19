@@ -69,7 +69,7 @@ void Robot::AutonomousPeriodic(){
 
   if (m_autoSelected == kAutoNameCustom1){ //Nombre 1
 
-    first_autonomous();
+    straight_forward();
 
   }else if (m_autoSelected == kAutoNameCustom2){ //Nombre 2
    
@@ -85,7 +85,7 @@ void Robot::AutonomousPeriodic(){
 
   }else{ //Default 
 
-    default_autonomous();
+    default_center();
 
   }
 
@@ -173,6 +173,7 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
 
   clamp(left_y2,-0.5,0.5);
   clamp(right_y2,-0.5,0.5);
+  
   // Comparación Variable para Mover Robot Tanque ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   if (invertir_direccion == true)
@@ -216,20 +217,26 @@ void Robot::IS_Tank(double control, float lim_neg, float lim_pos)
     victorspx_izquierda_atras.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
 }
 
-void Robot::default_autonomous(){
+void Robot::default_center(){
 
-  if(m_timer.Get() < 3_s){
+  if(m_timer.Get() < 5_s){
+      SPM1.Set(1);
       SPM2.Set(1);
-      SPM3.Set(1);
   }
-  if(m_timer.Get() < 4.5_s){
-      I_Tank(-1,-0.5,0.7);
-      D_Tank(-1,-0.5,0.7);
-    } 
+
+  if(m_timer.Get() < 7_s){
+      I_Tank(1,-0.5,0.7);
+      D_Tank(1,-0.5,0.7);
+  } 
 }
 
-void Robot::first_autonomous(){
+void Robot::straight_forward(){
 
+  if(m_timer.Get() < 2_s){
+    I_Tank(1, 0, 0);
+    D_Tank(1, 0, 0);
+
+  }
 }
 
 void Robot::second_autonomous(){

@@ -109,7 +109,7 @@ void Robot::TeleopPeriodic(){
   
   // Mapeo de los controles del driver 1 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   /* El metodo "xbox.Get + boton + ();"
-  se usa para obtener el valor del boton que estas aplastando, y lo almacenamos
+  se usa para obtener el valor del boton que estas presionando, y lo almacenamos
   en una variable para usar esos valores despues cuando los necesitemos.*/
   leftbump = xbox.GetLeftBumper();
   rightbump = xbox.GetRightBumper();
@@ -151,7 +151,6 @@ void Robot::TeleopPeriodic(){
   SPM2.Set(righttrig);
 
   //Mapeo del control 2  ------------------------------------------------------------------------------------------------------------------------------------------------------
-
   leftbump2 = xbox2.GetLeftBumper();
   rightbump2 = xbox2.GetRightBumper();
 
@@ -170,7 +169,6 @@ void Robot::TeleopPeriodic(){
   clamp(right_y2,-0.5,0.5);
   
   // Bloque de código que invierte la dirección de los motores ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
   if (invertir_direccion == true)
   {
     D_Tank(right_y,-limite_velocidad,limite_velocidad);
@@ -184,29 +182,28 @@ void Robot::TeleopPeriodic(){
 }
 
 // Funciones de Movimiento ------------------------------------------------------------------------------------------------------------------------------------------------------
-
 void Robot::D_Tank(double control, float lim_neg, float lim_pos)
 {
-    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    VSPX4.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    VSPX3.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
 }
 
 void Robot::I_Tank(double control, float lim_neg, float lim_pos)
 {
-    victorspx_izquierda_delante.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
-    victorspx_izquierda_atras.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    VSPX1.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    VSPX2.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
 }
 
 void Robot::DS_Tank(double control, float lim_neg, float lim_pos)
 {
-    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    VSPX4.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    VSPX3.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
 }
 
 void Robot::IS_Tank(double control, float lim_neg, float lim_pos)
 {
-    victorspx_izquierda_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    victorspx_izquierda_atras.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    VSPX1.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    VSPX2.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
 }
 
 void Robot::default_center(){

@@ -135,34 +135,27 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
   lefttrig = xbox.GetLeftTriggerAxis();
 
 
-  if(bX == true) {
+  if(bX == true){
     invertir_direccion = false;    
   }
   
-  if (bA == true) {
+  if (bA == true){
     invertir_direccion = true;
   }
 
- 
-
-  //SPM2.Set(lefttrig);
-  //SPM3.Set(righttrig);
-
-  // Comparación Variable para Mover Robot Tanque ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  if (invertir_direccion == true)
-  {
-    D_Tank(right_y,-limite_velocidad,limite_velocidad);
-    I_Tank(left_y,-limite_velocidad,limite_velocidad);
-  }
-  else
-  {
-    DS_Tank(right_y,-limite_velocidad,limite_velocidad);
-    IS_Tank(left_y,-limite_velocidad,limite_velocidad);
+  if (leftbump == true){
+  SPM3.Set(0.9);
   }
   
-  //Funciones de Botones Xbox Driver (resto) ------------------------------------------------------------------------------------------------------------------------------------------------------
-  //Conf Control² (todo) 
+  
+  if(rightbump == true){
+    SPM3.Set(0.0);
+  }
+
+  SPM1.Set(lefttrig);  
+  SPM2.Set(righttrig);
+
+  //Mapeo del control 2  ------------------------------------------------------------------------------------------------------------------------------------------------------
 
   leftbump2 = xbox2.GetLeftBumper();
   rightbump2 = xbox2.GetRightBumper();
@@ -180,39 +173,21 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
 
   clamp(left_y2,-0.5,0.5);
   clamp(right_y2,-0.5,0.5);
+  // Comparación Variable para Mover Robot Tanque ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-  if(bY2 == true){
-    
-  }else{
-
-  }
-
-  if(leftbump == true){
-    SPM3.Set(0.9);
-  }
-  
-  
-  if(rightbump == true){
-    SPM3.Set(0.0);
-  }
-   
-
-  /*if(lefttrig == true)
+  if (invertir_direccion == true)
   {
-    SPM2.Set(0.8);
-  }else{
-    
-    if(righttrig == true)
-    {
-      SPM2.Set(-0.8);
-    }
-    else
-    {
-      SPM2.Set(0.0);
-    }
-  }*/
-   
+    D_Tank(right_y,-limite_velocidad,limite_velocidad);
+    I_Tank(left_y,-limite_velocidad,limite_velocidad);
+  }
+  else
+  {
+    DS_Tank(right_y,-limite_velocidad,limite_velocidad);
+    IS_Tank(left_y,-limite_velocidad,limite_velocidad);
+  }
+  
+ 
+ 
 }
 
 // Funciones de Movimiento ------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -143,16 +143,10 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
     invertir_direccion = true;
   }
 
-  if (leftbump == true) {
-    SPM1.Set(1);
-  }
+ 
 
-  if (rightbump == true) {
-    SPM1.Set(0);
-  }
-
-  SPM2.Set(lefttrig);
-  SPM3.Set(righttrig);
+  //SPM2.Set(lefttrig);
+  //SPM3.Set(righttrig);
 
   // Comparación Variable para Mover Robot Tanque ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -195,12 +189,12 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
   }
 
   if(leftbump == true){
-    SPM1.Set(0.8);
+    SPM3.Set(0.9);
   }
   
   
   if(rightbump == true){
-    SPM2.Set(0.8);
+    SPM3.Set(0.0);
   }
    
 
@@ -226,7 +220,7 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
 void Robot::D_Tank(double control, float lim_neg, float lim_pos)
 {
     victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
 }
 
 void Robot::I_Tank(double control, float lim_neg, float lim_pos)
@@ -237,8 +231,8 @@ void Robot::I_Tank(double control, float lim_neg, float lim_pos)
 
 void Robot::DS_Tank(double control, float lim_neg, float lim_pos)
 {
-    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
-    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
 }
 
 void Robot::IS_Tank(double control, float lim_neg, float lim_pos)

@@ -68,7 +68,7 @@ private:
 
   //Autónomos y SmartDashboard ------------------------------------------------------------------------------------------------------------------------------------------------------
   SendableChooser<string> m_chooser;
-  const string kAutoNameDefault = "Default Center";
+  const string kAutoNameDefault = "Center";
   const string kAutoNameCustom1 = "Straight Forward";
   const string kAutoNameCustom2 = "Cuadrado";
   const string kAutoNameCustom3 = "3";
@@ -124,10 +124,10 @@ private:
   en el software correspondiente del controlador, el nombre de las variables
   se debe a la posicion de los mismo en el robot */
 
-  VictorSPX victorspx_izquierda_delante{1}; 
-  VictorSPX victorspx_izquierda_atras{2}; 
-  VictorSPX victorspx_derecha_delante{4}; 
-  VictorSPX victorspx_derecha_atras{3}; 
+  VictorSPX VSPX1{1}; 
+  VictorSPX VSPX2{2};  
+  VictorSPX VSPX3{3}; 
+  VictorSPX VSPX4{4};
 
   rev::CANSparkMaxLowLevel::MotorType Brushed;
   rev::CANSparkMax SPM1{6, Brushed};
@@ -135,11 +135,7 @@ private:
   rev::CANSparkMax SPM3{8, Brushed};
   rev::CANSparkMax SPM4{9, Brushed};
 
-
-  //Spark SP{0};
-
   //Timer ------------------------------------------------------------------------------------------------------------------------------------------------------
-
   Timer m_timer;
   
   /*

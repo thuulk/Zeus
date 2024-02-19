@@ -151,6 +151,9 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
     SPM1.Set(0);
   }
 
+  SPM2.Set(lefttrig);
+  SPM3.Set(righttrig);
+
   // Comparación Variable para Mover Robot Tanque ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   if (invertir_direccion == true)

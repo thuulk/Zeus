@@ -166,14 +166,14 @@ void Robot::TeleopPeriodic(){
 // Funciones de Movimiento ------------------------------------------------------------------------------------------------------------------------------------------------------
 void Robot::D_Tank(double control)
 {
-    VSPX4.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    VSPX3.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    VSPX4.Set(VictorSPXControlMode::PercentOutput, control);
+    VSPX3.Set(VictorSPXControlMode::PercentOutput, control);
 }
 
 void Robot::I_Tank(double control)
 {
-    VSPX1.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
-    VSPX2.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    VSPX1.Set(VictorSPXControlMode::PercentOutput, -control);
+    VSPX2.Set(VictorSPXControlMode::PercentOutput, -control);
 }
 
 // Funcion del Autonomo Blue II y Red II

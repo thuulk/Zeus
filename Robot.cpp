@@ -140,11 +140,11 @@ void Robot::TeleopPeriodic(){
 
   // Activar motor del intake
   if (leftbump == true){
-    SPM3.Set(0.9);
+    SPM3.Set(1);
   }
   
   if (bB == true){
-    SPM3.Set(-0.9);
+    SPM3.Set(-1);
   }
 
   // Desactivar motor del intake
@@ -153,8 +153,8 @@ void Robot::TeleopPeriodic(){
   }
 
   // Darle potencia a los motores del outtake
-  SPM1.Set(righttrig);  
-  SPM4.Set(-lefttrig);
+  SPM4.Set(-righttrig);  
+  SPM2.Set(lefttrig);
 
   //Mapeo del control 2  ------------------------------------------------------------------------------------------------------------------------------------------------------
   leftbump2 = xbox2.GetLeftBumper();
@@ -175,42 +175,29 @@ void Robot::TeleopPeriodic(){
   clamp(right_y2,-0.5,0.5);
   
   // Bloque de código que invierte la dirección de los motores ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  if (invertir_direccion == true)
-  {
-    D_Tank(right_y,-limite_velocidad,limite_velocidad);
-    I_Tank(left_y,-limite_velocidad,limite_velocidad);
+  if (invertir_direccion == true){
+    D_Tank(right_y);
+    I_Tank(left_y);
   }
-  else
-  {
-    DS_Tank(right_y,-limite_velocidad,limite_velocidad);
-    IS_Tank(left_y,-limite_velocidad,limite_velocidad);
+  else{
+    D_Tank(right_y);
+    I_Tank(left_y);
   }
 }
 
 // Funciones de Movimiento ------------------------------------------------------------------------------------------------------------------------------------------------------
-void Robot::D_Tank(double control, float lim_neg, float lim_pos)
+void Robot::D_Tank(double control)
 {
     VSPX4.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
     VSPX3.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
 }
 
-void Robot::I_Tank(double control, float lim_neg, float lim_pos)
+void Robot::I_Tank(double control)
 {
     VSPX1.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
     VSPX2.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
 }
 
-void Robot::DS_Tank(double control, float lim_neg, float lim_pos)
-{
-    VSPX4.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
-    VSPX3.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
-}
-
-void Robot::IS_Tank(double control, float lim_neg, float lim_pos)
-{
-    VSPX1.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    VSPX2.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-}
 
 void Robot::default_center(){
 
@@ -220,16 +207,16 @@ void Robot::default_center(){
   }
 
   if(m_timer.Get() < 7_s){
-      I_Tank(1,-0.5,0.7);
-      D_Tank(1,-0.5,0.7);
+      I_Tank(1);
+      D_Tank(1);
   } 
 }
 
 void Robot::straight_forward(){
 
   if(m_timer.Get() < 2_s){
-    I_Tank(1, 0, 0);
-    D_Tank(1, 0, 0);
+    I_Tank(1);
+    D_Tank(1);
 
   }
 }

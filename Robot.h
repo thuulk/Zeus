@@ -50,10 +50,9 @@ class Robot : public frc::TimedRobot {
   void DisabledPeriodic() override;
   void TestInit() override;
   void TestPeriodic() override;
-  void D_Tank(double control,float lim_neg,float lim_pos);
-  void I_Tank(double control,float lim_neg,float lim_pos);
-  void DS_Tank(double control,float lim_neg,float lim_pos);
-  void IS_Tank(double control,float lim_neg,float lim_pos);  
+  void D_Tank(double control);
+  void I_Tank(double control);
+   
 
 private:
 

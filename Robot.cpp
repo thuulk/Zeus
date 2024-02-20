@@ -113,18 +113,14 @@ void Robot::TeleopPeriodic(){
   en una variable para usar esos valores despues cuando los necesitemos.*/
   leftbump = xbox.GetLeftBumper();
   rightbump = xbox.GetRightBumper();
-
   bY = xbox.GetYButton();
   bX = xbox.GetXButton();
   bA = xbox.GetAButton();
   bB = xbox.GetBButton();
-
   left_x = xbox.GetLeftX();
   left_y = xbox.GetLeftY();
-
   right_x = xbox.GetRightX();
   right_y = xbox.GetRightY();
-
   righttrig = xbox.GetRightTriggerAxis();
   lefttrig = xbox.GetLeftTriggerAxis();
 
@@ -138,41 +134,23 @@ void Robot::TeleopPeriodic(){
     invertir_direccion = true;
   }
 
-  // Activar motor del intake
+  // Activar motor del intake; hacer entrar el game piece al robot
   if (leftbump == true){
-    SPM3.Set(1);
+    SPM1.Set(1);
   }
-  
+  // Activar motores de manera invertida del intake; expulsar el gamepiece del robot
   if (bB == true){
-    SPM3.Set(-1);
+    SPM1.Set(-1);
   }
 
   // Desactivar motor del intake
   if(rightbump == true){
-    SPM3.Set(0.0);
+    SPM1.Set(0.0);
   }
 
   // Darle potencia a los motores del outtake
-  SPM4.Set(-righttrig);  
-  SPM2.Set(lefttrig);
-
-  //Mapeo del control 2  ------------------------------------------------------------------------------------------------------------------------------------------------------
-  leftbump2 = xbox2.GetLeftBumper();
-  rightbump2 = xbox2.GetRightBumper();
-
-  bA2 = xbox2.GetAButton();
-  bB2 = xbox2.GetBButton();
-  bY2 = xbox2.GetYButton();
-  bX2 = xbox2.GetXButton();
-
-  left_x2 = xbox2.GetLeftX();
-  left_y2 = xbox2.GetLeftY();
-
-  right_x2 = xbox2.GetRightX();
-  right_y2 = xbox2.GetRightY();
-
-  clamp(left_y2,-0.5,0.5);
-  clamp(right_y2,-0.5,0.5);
+  SPM3.Set(-lefttrig);  
+  SPM2.Set(righttrig);
   
   // Bloque de código que invierte la dirección de los motores ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   if (invertir_direccion == true){
@@ -180,8 +158,8 @@ void Robot::TeleopPeriodic(){
     I_Tank(left_y);
   }
   else{
-    D_Tank(right_y);
-    I_Tank(left_y);
+    D_Tank(-right_y);
+    I_Tank(-left_y);
   }
 }
 
@@ -198,7 +176,7 @@ void Robot::I_Tank(double control)
     VSPX2.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
 }
 
-
+// Funcion del Autonomo Blue II y Red II
 void Robot::default_center(){
 
   if(m_timer.Get() < 5_s){

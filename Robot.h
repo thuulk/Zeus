@@ -53,14 +53,13 @@ class Robot : public frc::TimedRobot {
   void D_Tank(double control,float lim_neg,float lim_pos);
   void I_Tank(double control,float lim_neg,float lim_pos);
   void DS_Tank(double control,float lim_neg,float lim_pos);
-  void IS_Tank(double control,float lim_neg,float lim_pos);
-  
+  void IS_Tank(double control,float lim_neg,float lim_pos);  
 
 private:
 
   // Funciones de los autonomos ------------------------------------------------------------------------------------------------------------------------------------------------------
-  void default_autonomous();
-  void first_autonomous();
+  void default_center();
+  void straight_forward();
   void second_autonomous();
   void third_autonomous();
   void fourth_autonomous();
@@ -69,8 +68,8 @@ private:
 
   //Autónomos y SmartDashboard ------------------------------------------------------------------------------------------------------------------------------------------------------
   SendableChooser<string> m_chooser;
-  const string kAutoNameDefault = "0(exp)";
-  const string kAutoNameCustom1 = "1";
+  const string kAutoNameDefault = "Center";
+  const string kAutoNameCustom1 = "Straight Forward";
   const string kAutoNameCustom2 = "Cuadrado";
   const string kAutoNameCustom3 = "3";
   const string kAutoNameCustom4 = "4";
@@ -125,19 +124,18 @@ private:
   en el software correspondiente del controlador, el nombre de las variables
   se debe a la posicion de los mismo en el robot */
 
-  VictorSPX victorspx_izquierda_delante{1}; 
-  VictorSPX victorspx_izquierda_atras{2}; 
-  VictorSPX victorspx_derecha_delante{4}; 
-  VictorSPX victorspx_derecha_atras{3}; 
+  VictorSPX VSPX1{1}; 
+  VictorSPX VSPX2{2};  
+  VictorSPX VSPX3{3}; 
+  VictorSPX VSPX4{4};
 
   rev::CANSparkMaxLowLevel::MotorType Brushed;
-  rev::CANSparkMax SPM1{7,Brushed};
-  rev::CANSparkMax SPM2{8,Brushed}; 
-
-  //Spark SP{0};
+  rev::CANSparkMax SPM1{6, Brushed};
+  rev::CANSparkMax SPM2{7, Brushed}; 
+  rev::CANSparkMax SPM3{8, Brushed};
+  rev::CANSparkMax SPM4{9, Brushed};
 
   //Timer ------------------------------------------------------------------------------------------------------------------------------------------------------
-
   Timer m_timer;
   
   /*

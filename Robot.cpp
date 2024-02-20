@@ -3,10 +3,10 @@
 using namespace frc;
 using namespace std;
 
-//holiwis, prueba belica
-void Robot::RobotInit(){ //inicializacion del robot
+//inicializacion del robot
+void Robot::RobotInit(){ 
 
-  //Selección de Autónomos
+  // Cargar selección de autónomos al Smart Dashboard
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom1, kAutoNameCustom1);
   m_chooser.AddOption(kAutoNameCustom2, kAutoNameCustom2);
@@ -16,7 +16,7 @@ void Robot::RobotInit(){ //inicializacion del robot
   SmartDashboard::PutData("Auto Modes", &m_chooser);
 }
 
-void Robot::RobotPeriodic() { //
+void Robot::RobotPeriodic() { 
 
   //Valores que se ven en el SmartDashboard
   SmartDashboard::PutNumber("ia: ", ia);
@@ -43,20 +43,10 @@ void Robot::AutonomousInit() {
   m_timer.Start();
 
   /*Inicializacion del autonomo. Le damos a la variable m_autoselected 
-  el valor del autonomo seleccionado en el smart dashboard*/
+  el valor del autonomo seleccionado en el Smart Dashboard*/
   m_autoSelected = m_chooser.GetSelected();
   cout << "Autonomous Selected:" << m_autoSelected << endl;
-
-  if (m_autoSelected == kAutoNameCustom1){
-    //Toda la progra
-  }else if (m_autoSelected == kAutoNameCustom2){
-    //Toda la progra 2
-  }else if (m_autoSelected == kAutoNameCustom3){
-    //Toda la progra 3
-  }else{
-    //Toda la progra del default
-  }
-
+  
   ia = 0;
 }
 
@@ -66,31 +56,33 @@ void Robot::AutonomousPeriodic(){
   Estructura base de los autónomos
   En x_s, x representa los segundos de movimiento.
   (velocidad del robot, velocidad minima, velocidad maxima). */
-
+  
+  //Nombre 1
   if (m_autoSelected == kAutoNameCustom1){ //Nombre 1
-
-    first_autonomous();
-
-  }else if (m_autoSelected == kAutoNameCustom2){ //Nombre 2
-   
-    second_autonomous();
-
-  }else if (m_autoSelected == kAutoNameCustom3){ //Nombre 3
-
-    third_autonomous();
-
-  }else if (m_autoSelected == kAutoNameCustom4){ //Nombre 4
-
-    fourth_autonomous();
-
-  }else{ //Default 
-
-    default_autonomous();
-
+    straight_forward();
   }
 
-  ia++;
+  //Nombre 2
+  else if (m_autoSelected == kAutoNameCustom2){ //Nombre 2
+    second_autonomous();
+  }
 
+  //Nombre 3
+  else if (m_autoSelected == kAutoNameCustom3){ //Nombre 3
+    third_autonomous();
+    
+  }
+
+  //Nombre 4
+  else if (m_autoSelected == kAutoNameCustom4){ 
+    fourth_autonomous();
+  }
+
+  //Default 
+  else{ 
+    default_center();
+  }
+  ia++;
 }
 
 void Robot::TeleopInit() {
@@ -104,26 +96,28 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic(){
   
-/* Esta función es un loop for; para que el robot avanze, retroceda, gire o se detenga, necesita
-constantemente actualizar los valores tanto de los motores, como los booleanos (true or false),
-si es mecesario. */
+  /* Esta función es un loop for; para que el robot avanze, retroceda, gire o se detenga, necesita
+  constantemente actualizar los valores tanto de los motores, como los booleanos (true or false),
+  si es mecesario. */
 
-/* Esta linea aumenta el valor de "it" por una unidad cada vez que el loop se ejecuta,
-no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
+  /* Esta linea aumenta el valor de "it" por una unidad cada vez que el loop se ejecuta,
+  no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
   it++;
 
-// Esta funcion actualiza los valores del SmartDashboard
+  // Esta funcion actualiza los valores del SmartDashboard
   SmartDashboard::UpdateValues();
   
-// Mapeo de los controles del driver 1 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // Mapeo de los controles del driver 1 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   /* El metodo "xbox.Get + boton + ();"
-  se usa para obtener el valor del boton que estas aplastando, y lo almacenamos
+  se usa para obtener el valor del boton que estas presionando, y lo almacenamos
   en una variable para usar esos valores despues cuando los necesitemos.*/
   leftbump = xbox.GetLeftBumper();
   rightbump = xbox.GetRightBumper();
 
   bY = xbox.GetYButton();
   bX = xbox.GetXButton();
+  bA = xbox.GetAButton();
+  bB = xbox.GetBButton();
 
   left_x = xbox.GetLeftX();
   left_y = xbox.GetLeftY();
@@ -134,36 +128,35 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
   righttrig = xbox.GetRightTriggerAxis();
   lefttrig = xbox.GetLeftTriggerAxis();
 
-
-  if(bX == true) {
+  // Regresar la direccion de los motores a la normal
+  if(bX == true){
     invertir_direccion = false;    
   }
-  
-  if (bA == true) {
+
+  // Invertir la direccion de los motores
+  if (bA == true){
     invertir_direccion = true;
   }
 
- 
-
-  //SPM2.Set(lefttrig);
-  //SPM3.Set(righttrig);
-
-  // Comparación Variable para Mover Robot Tanque ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  if (invertir_direccion == true)
-  {
-    D_Tank(right_y,-limite_velocidad,limite_velocidad);
-    I_Tank(left_y,-limite_velocidad,limite_velocidad);
-  }
-  else
-  {
-    DS_Tank(right_y,-limite_velocidad,limite_velocidad);
-    IS_Tank(left_y,-limite_velocidad,limite_velocidad);
+  // Activar motor del intake
+  if (leftbump == true){
+    SPM3.Set(0.9);
   }
   
-  //Funciones de Botones Xbox Driver (resto) ------------------------------------------------------------------------------------------------------------------------------------------------------
-  //Conf Control² (todo) 
+  if (bB == true){
+    SPM3.Set(-0.9);
+  }
 
+  // Desactivar motor del intake
+  if(rightbump == true){
+    SPM3.Set(0.0);
+  }
+
+  // Darle potencia a los motores del outtake
+  SPM1.Set(righttrig);  
+  SPM4.Set(-lefttrig);
+
+  //Mapeo del control 2  ------------------------------------------------------------------------------------------------------------------------------------------------------
   leftbump2 = xbox2.GetLeftBumper();
   rightbump2 = xbox2.GetRightBumper();
 
@@ -180,81 +173,65 @@ no se que funcion cumple en el codigo, por lo mismo, recomiendo no eliminarlo.*/
 
   clamp(left_y2,-0.5,0.5);
   clamp(right_y2,-0.5,0.5);
-
-
-  if(bY2 == true){
-    
-  }else{
-
-  }
-
-  if(leftbump == true){
-    SPM3.Set(0.9);
-  }
   
-  
-  if(rightbump == true){
-    SPM3.Set(0.0);
-  }
-   
-
-  /*if(lefttrig == true)
+  // Bloque de código que invierte la dirección de los motores ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  if (invertir_direccion == true)
   {
-    SPM2.Set(0.8);
-  }else{
-    
-    if(righttrig == true)
-    {
-      SPM2.Set(-0.8);
-    }
-    else
-    {
-      SPM2.Set(0.0);
-    }
-  }*/
-   
+    D_Tank(right_y,-limite_velocidad,limite_velocidad);
+    I_Tank(left_y,-limite_velocidad,limite_velocidad);
+  }
+  else
+  {
+    DS_Tank(right_y,-limite_velocidad,limite_velocidad);
+    IS_Tank(left_y,-limite_velocidad,limite_velocidad);
+  }
 }
 
 // Funciones de Movimiento ------------------------------------------------------------------------------------------------------------------------------------------------------
-
 void Robot::D_Tank(double control, float lim_neg, float lim_pos)
 {
-    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    VSPX4.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    VSPX3.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
 }
 
 void Robot::I_Tank(double control, float lim_neg, float lim_pos)
 {
-    victorspx_izquierda_delante.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
-    victorspx_izquierda_atras.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    VSPX1.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    VSPX2.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
 }
 
 void Robot::DS_Tank(double control, float lim_neg, float lim_pos)
 {
-    victorspx_derecha_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    victorspx_derecha_atras.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    VSPX4.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
+    VSPX3.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
 }
 
 void Robot::IS_Tank(double control, float lim_neg, float lim_pos)
 {
-    victorspx_izquierda_delante.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
-    victorspx_izquierda_atras.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    VSPX1.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    VSPX2.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
 }
 
-void Robot::default_autonomous(){
+void Robot::default_center(){
 
-  if(m_timer.Get() < 3_s){
+  if(m_timer.Get() < 5_s){
+      SPM1.Set(1);
       SPM2.Set(1);
-      SPM3.Set(1);
   }
-  if(m_timer.Get() < 4.5_s){
-      I_Tank(-1,-0.5,0.7);
-      D_Tank(-1,-0.5,0.7);
-    } 
+
+  if(m_timer.Get() < 7_s){
+      I_Tank(1,-0.5,0.7);
+      D_Tank(1,-0.5,0.7);
+  } 
 }
 
-void Robot::first_autonomous(){
+void Robot::straight_forward(){
 
+  if(m_timer.Get() < 2_s){
+    I_Tank(1, 0, 0);
+    D_Tank(1, 0, 0);
+
+  }
 }
 
 void Robot::second_autonomous(){

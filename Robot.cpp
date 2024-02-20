@@ -116,6 +116,8 @@ void Robot::TeleopPeriodic(){
 
   bY = xbox.GetYButton();
   bX = xbox.GetXButton();
+  bA = xbox.GetAButton();
+  bB = xbox.GetBButton();
 
   left_x = xbox.GetLeftX();
   left_y = xbox.GetLeftY();
@@ -138,17 +140,21 @@ void Robot::TeleopPeriodic(){
 
   // Activar motor del intake
   if (leftbump == true){
-  SPM3.Set(0.9);
+    SPM3.Set(0.9);
   }
   
+  if (bB == true){
+    SPM3.Set(-0.9);
+  }
+
   // Desactivar motor del intake
   if(rightbump == true){
     SPM3.Set(0.0);
   }
 
   // Darle potencia a los motores del outtake
-  SPM1.Set(lefttrig);  
-  SPM2.Set(righttrig);
+  SPM1.Set(righttrig);  
+  SPM4.Set(-lefttrig);
 
   //Mapeo del control 2  ------------------------------------------------------------------------------------------------------------------------------------------------------
   leftbump2 = xbox2.GetLeftBumper();
@@ -196,7 +202,7 @@ void Robot::I_Tank(double control, float lim_neg, float lim_pos)
 
 void Robot::DS_Tank(double control, float lim_neg, float lim_pos)
 {
-    VSPX4.Set(VictorSPXControlMode::PercentOutput, limite_velocidad*control);
+    VSPX4.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
     VSPX3.Set(VictorSPXControlMode::PercentOutput, -limite_velocidad*control);
 }
 

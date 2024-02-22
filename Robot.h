@@ -84,6 +84,10 @@ private:
 
   bool leftbump = false;
   bool rightbump = false;
+
+  bool BLeftStick = false;
+  bool BRightStick = false;
+
   bool bA = false;
   bool bB = false;
   bool bX = false;
@@ -114,7 +118,7 @@ private:
 
   //Variables de los motores ----------------------------------------------------------------------------------------------------------------------------------------
 
-  bool invertir_direccion = true;
+  bool invertir_direccion = false;
   
   // Sparks & Victors ----------------------------------------------------------------------------------------------------------------------------------------
  

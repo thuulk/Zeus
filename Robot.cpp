@@ -14,6 +14,9 @@ void Robot::RobotInit(){
   m_chooser.AddOption(kAutoNameCustom4, kAutoNameCustom4);
   m_chooser.AddOption(kAutoNameCustom5, kAutoNameCustom5);
   SmartDashboard::PutData("Auto Modes", &m_chooser);
+
+  // Mostrar la camara en la driver station
+  CameraServer::StartAutomaticCapture();
 }
 
 void Robot::RobotPeriodic() { 
@@ -90,8 +93,6 @@ void Robot::TeleopInit() {
   //Confs Default Teleop
   it = 0;
 
-  invertir_direccion = true;
-
 }
 
 void Robot::TeleopPeriodic(){
@@ -117,21 +118,29 @@ void Robot::TeleopPeriodic(){
   bX = xbox.GetXButton();
   bA = xbox.GetAButton();
   bB = xbox.GetBButton();
+
   left_x = xbox.GetLeftX();
   left_y = xbox.GetLeftY();
   right_x = xbox.GetRightX();
   right_y = xbox.GetRightY();
+
+  BLeftStick = xbox.GetLeftStickButton();
+  BRightStick = xbox.GetRightStickButton();
   righttrig = xbox.GetRightTriggerAxis();
   lefttrig = xbox.GetLeftTriggerAxis();
 
-  // Regresar la direccion de los motores a la normal
-  if(bX == true){
-    invertir_direccion = false;    
+  // Invertir la direccion de los motores
+  if (invertir_direccion == false){
+    if(BLeftStick == true && BRightStick == true){
+      invertir_direccion = true;    
+    }
   }
 
-  // Invertir la direccion de los motores
-  if (bA == true){
-    invertir_direccion = true;
+  // Regresar la direccion de los motores a la normal
+  if (invertir_direccion == true){
+    if(BLeftStick == true && BRightStick == true){
+      invertir_direccion = false;    
+    }
   }
 
   // Activar motor del intake; hacer entrar el game piece al robot
@@ -152,14 +161,14 @@ void Robot::TeleopPeriodic(){
   SPM3.Set(-lefttrig);  
   SPM2.Set(righttrig);
   
-  // Bloque de código que invierte la dirección de los motores ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // Bloque de código que establece conducción regular o invertida la dirección de los motores ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   if (invertir_direccion == true){
-    D_Tank(right_y);
-    I_Tank(left_y);
+    D_Tank(-left_y);
+    I_Tank(-right_y);
   }
   else{
-    D_Tank(-right_y);
-    I_Tank(-left_y);
+    D_Tank(right_y);
+    I_Tank(left_y);
   }
 }
 
@@ -176,20 +185,21 @@ void Robot::I_Tank(double control)
     VSPX2.Set(VictorSPXControlMode::PercentOutput, -control);
 }
 
-// Funcion del Autonomo Blue II y Red II
+// Funcion del Autonomo Blue II & Red II
 void Robot::default_center(){
 
   if(m_timer.Get() < 5_s){
-      SPM1.Set(1);
-      SPM2.Set(1);
+      SPM2.Set(-1);
+      SPM3.Set(1);
   }
 
-  if(m_timer.Get() < 7_s){
+  if(m_timer.Get() < 7.3_s){
       I_Tank(1);
       D_Tank(1);
   } 
 }
 
+// Funcion del Autonomo Blue I, Blue II, Red I & Red II
 void Robot::straight_forward(){
 
   if(m_timer.Get() < 2_s){

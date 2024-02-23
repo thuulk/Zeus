@@ -144,21 +144,20 @@ void Robot::TeleopPeriodic(){
   }
 
   // Activar motor del intake; hacer entrar el game piece al robot
-  if (leftbump == true){
-    SPM1.Set(1);
-  }
+  SPM1.Set(lefttrig);
+  
   // Activar motores de manera invertida del intake; expulsar el gamepiece del robot
   if (bB == true){
     SPM1.Set(-1);
   }
 
   // Desactivar motor del intake
-  if(rightbump == true){
+  if(bY == true){
     SPM1.Set(0.0);
   }
 
   // Darle potencia a los motores del outtake
-  SPM3.Set(-lefttrig);  
+  SPM3.Set(-righttrig);  
   SPM2.Set(righttrig);
   
   // Bloque de código que establece conducción regular o invertida la dirección de los motores ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -17,6 +17,10 @@ void Robot::RobotInit(){
 
   // Mostrar la camara en la driver station
   CameraServer::StartAutomaticCapture();
+  
+  
+  
+  
 }
 
 void Robot::RobotPeriodic() { 
@@ -107,6 +111,10 @@ void Robot::TeleopPeriodic(){
 
   // Esta funcion actualiza los valores del SmartDashboard
   SmartDashboard::UpdateValues();
+
+  // Actualizar la imagen desplegada en la driver station
+  cs::CvSink cvSink = CameraServer::GetVideo();
+  cs::CvSource outputStream = CameraServer::PutVideo("Blur", 640, 480);
   
   // Mapeo de los controles del driver 1 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   /* El metodo "xbox.Get + boton + ();"
@@ -130,36 +138,52 @@ void Robot::TeleopPeriodic(){
   lefttrig = xbox.GetLeftTriggerAxis();
 
   // Invertir la direccion de los motores
-  if (invertir_direccion == false){
-    if(BLeftStick == true && BRightStick == true){
-      invertir_direccion = true;    
-    }
+  if(BLeftStick== true){
+    invertir_direccion = true;    
   }
+  
 
   // Regresar la direccion de los motores a la normal
-  if (invertir_direccion == true){
-    if(BLeftStick == true && BRightStick == true){
-      invertir_direccion = false;    
-    }
+  if(BRightStick == true){
+    invertir_direccion = false;    
   }
-
-  // Activar motor del intake; hacer entrar el game piece al robot
-  SPM1.Set(lefttrig);
   
   // Activar motores de manera invertida del intake; expulsar el gamepiece del robot
   if (bB == true){
-    SPM1.Set(-1);
+    SPM2.Set(0);
+    SPM3.Set(0);
   }
+
 
   // Desactivar motor del intake
   if(bY == true){
     SPM1.Set(0.0);
   }
 
+  // Activar motor del intake; hacer entrar el game piece al robot
   // Darle potencia a los motores del outtake
-  SPM3.Set(-righttrig);  
-  SPM2.Set(righttrig);
+  if (invertir_iotake == false){
+    SPM2.Set(-righttrig);
+    SPM3.Set(righttrig);
+    SPM1.Set(lefttrig);
+  }
+
+  // hacer que el intake y outtake se muevan de manera inversa
+  if (invertir_iotake == true){
+    SPM2.Set(righttrig);
+    SPM3.Set(-righttrig);
+    SPM1.Set(-lefttrig);
+  }
+
+  if (leftbump == true){
+    invertir_iotake = true;
+  }
+
+  if (rightbump == true){
+    invertir_iotake = false;
+  }
   
+
   // Bloque de código que establece conducción regular o invertida la dirección de los motores ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   if (invertir_direccion == true){
     D_Tank(-left_y);
@@ -188,8 +212,8 @@ void Robot::I_Tank(double control)
 void Robot::default_center(){
 
   if(m_timer.Get() < 5_s){
-      SPM2.Set(-1);
-      SPM3.Set(1);
+      SPM2.Set(1);
+      SPM3.Set(-1);
   }
 
   if(m_timer.Get() < 7.3_s){
@@ -204,7 +228,6 @@ void Robot::straight_forward(){
   if(m_timer.Get() < 2_s){
     I_Tank(1);
     D_Tank(1);
-
   }
 }
 

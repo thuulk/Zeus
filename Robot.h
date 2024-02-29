@@ -110,6 +110,8 @@ private:
   bool bB2 = false;
   bool bX2 = false;
   bool bY2 = false;
+  bool lefttrig2 = false;
+  bool righttrig2 = false;
 
   double left_x2 = 0.0;
   double left_y2 = 0.0;
@@ -119,6 +121,7 @@ private:
   //Variables de los motores ----------------------------------------------------------------------------------------------------------------------------------------
 
   bool invertir_direccion = false;
+  bool invertir_iotake = false;
   
   // Sparks & Victors ----------------------------------------------------------------------------------------------------------------------------------------
  
@@ -131,11 +134,11 @@ private:
   VictorSPX VSPX3{3}; 
   VictorSPX VSPX4{4};
 
-  rev::CANSparkMaxLowLevel::MotorType Brushed;
-  rev::CANSparkMax SPM1{6, Brushed};
-  rev::CANSparkMax SPM2{7, Brushed}; 
-  rev::CANSparkMax SPM3{8, Brushed};
-  rev::CANSparkMax SPM4{9, Brushed};
+  
+  rev::CANSparkMax SPM1{6, rev::CANSparkMaxLowLevel::MotorType::kBrushed};
+  rev::CANSparkMax SPM2{7, rev::CANSparkMaxLowLevel::MotorType::kBrushless}; 
+  rev::CANSparkMax SPM3{8, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
+  rev::CANSparkMax SPM4{9, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
 
   //Timer ------------------------------------------------------------------------------------------------------------------------------------------------------
   Timer m_timer;
